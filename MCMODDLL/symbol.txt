@@ -1,0 +1,59 @@
+# 此文件内填写需要Hook的符号名称。
+# 每行填一个完整的符号名称，不多不少，不要包括其他内容！
+# 以#或//开头的行将被视为注释，不影响PDB工具解析。
+# 例如：
+# ??0ProjectileComponent@@QEAA@AEAVActor@@@Z
+# 此处开始填入符号
+
+
+
+# 以下内容适合BDS的版本为1.11.4.2，如果以后版本更新导致其中的某些符号变化，请您自行检查更新适配。
+
+# BlockTypeRegistry注册方块表
+?mBlockLookupMap@BlockTypeRegistry@@0V?$unordered_map@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@V?$SharedPtr@VBlockLegacy@@@@U?$hash@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@2@U?$equal_to@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@2@V?$allocator@U?$pair@$$CBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@V?$SharedPtr@VBlockLegacy@@@@@std@@@2@@std@@A
+# VanillaBlockTypes方块注册过程
+?registerBlocks@VanillaBlockTypes@@YAXXZ
+
+# BlockLegacy
+# 获取方块名称
+?getFullName@BlockLegacy@@QEBA?AV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@XZ
+# 获取方块ID
+?getBlockItemId@BlockLegacy@@QEBAFXZ
+# 玩家破坏传统方块
+?playerDestroy@BlockLegacy@@UEBAXAEAVPlayer@@AEBVBlockPos@@AEBVBlock@@@Z
+
+# Block：获取BlockLegacy
+?getLegacyBlock@Block@@QEBAAEBVBlockLegacy@@XZ
+
+# Actor
+# 获取名称
+?getNameTag@Actor@@UEBAAEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@XZ
+# 获取维度
+?getDimensionId@Actor@@UEBA?AV?$AutomaticID@VDimension@@H@@XZ
+
+# 各种箱子被玩家打开
+?startOpen@ChestBlockActor@@UEAAXAEAVPlayer@@@Z
+?startOpen@BarrelBlockActor@@UEAAXAEAVPlayer@@@Z
+?startOpen@FurnaceBlockActor@@UEAAXAEAVPlayer@@@Z
+# 各种箱子被玩家关闭
+?stopOpen@ChestBlockActor@@UEAAXAEAVPlayer@@@Z
+?stopOpen@BarrelBlockActor@@UEAAXAEAVPlayer@@@Z
+?stopOpen@FurnaceBlockActor@@UEAAXAEAVPlayer@@@Z
+
+# BlockEventCoordinator：玩家放置方块
+?onBlockPlacedByPlayer@BlockEventCoordinator@@QEAAXAEAVPlayer@@AEBVBlock@@AEBVBlockPos@@_N@Z
+
+# LevelContainerManagerModel：箱子内物品槽设置
+?setSlot@LevelContainerManagerModel@@UEAAXHAEBUContainerItemStack@@@Z
+
+# ItemStack
+# 获取ID
+?getId@ItemStack@@QEBAFXZ
+# 获取名字
+?getName@ItemStack@@QEBA?AV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@XZ
+
+?_destroyBlockInternal@GameMode@@AEAA_NAEBVBlockPos@@E@Z
+
+?getBlock@BlockSource@@QEBAAEBVBlock@@AEBVBlockPos@@@Z
+
+# 文件结束
