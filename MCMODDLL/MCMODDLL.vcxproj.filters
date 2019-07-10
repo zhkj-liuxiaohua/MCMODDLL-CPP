@@ -58,6 +58,9 @@
     <Text Include="使用说明.txt">
       <Filter>使用说明</Filter>
     </Text>
+    <Text Include="bedrock_server的PDB符号信息.txt">
+      <Filter>资源文件</Filter>
+    </Text>
   </ItemGroup>
   <ItemGroup>
     <None Include="BDS win版插件开发工具.7z">

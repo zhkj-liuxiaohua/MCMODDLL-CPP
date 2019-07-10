@@ -17,6 +17,8 @@ struct SharedPtr {
 };
 
 struct BlockLegacy {
+
+/*
 	auto getFullName() const {
 		std::string str("");
 		SYM_CALL(void (*)(const BlockLegacy*, std::string*),
@@ -24,6 +26,7 @@ struct BlockLegacy {
 			this, &str);
 		return str;
 	}
+*/
 
 	auto getBlockItemID() const {
 		return SYM_CALL(short (*)(const BlockLegacy*),

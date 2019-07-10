@@ -41,7 +41,8 @@ THook(void,
 	pMap = SYM_PTR(decltype(pMap), MSSYM_MD5_ceb8b47184006e4d7622b39978535236);
 	for (auto i = pMap->begin(); i != pMap->end(); ++i) {
 		auto id = i->second->getBlockItemID();
-		auto str = i->second->getFullName();
+		auto str = std::string("Mincraft: " + id);
+			//i->second->getFullName();
 		BlockRegMap.emplace(id, str);
 	}
 }
@@ -109,15 +110,15 @@ namespace Log {
 				<< "在" << Dimension(dimension)
 				<< content << std::endl;
 		}
-		void Block(const std::string& title, const std::string& player_name, int dimension, const std::string& operation, const std::string& block_name, INT32 coordinator[]) {
-			auto block_name_inner = block_name;
-			if (block_name == "minecraft:air")
-				block_name_inner = "未知类型";
+		void Block(const std::string& title, const std::string& player_name, int dimension, const std::string& operation, const short block_id, INT32 coordinator[]) {
+			auto block_name_inner = block_id;
+//			if (block_id == 0)
+//				block_name_inner = -1;//"未知类型";
 			std::cout
 				<< Title(title) << " "
 				<< "玩家" << " " << player_name << " "
 				<< "在" <<Dimension(dimension)<< " " << Coordinator(coordinator) << " "
-				<< operation << " "
+				<< operation << " id:"
 				<< block_name_inner << " " << "方块。"
 				<< std::endl;
 		}
@@ -151,26 +152,32 @@ namespace Log {
 	}
 };
 
+
 // 玩家放置方块
-THook(void,
-	MSSYM_B1QE21onBlockPlacedByPlayerB1AE21BlockEventCoordinatorB2AAE15QEAAXAEAVPlayerB2AAA9AEBVBlockB2AAE12AEBVBlockPosB3AAUA1NB1AA1Z,
+THook(__int64,
+	MSSYM_B1QE21onBlockPlacedByPlayerB1AE34VanillaServerGameplayEventListenerB2AAA4UEAAB1QE14AW4EventResultB2AAE10AEAVPlayerB2AAA9AEBVBlockB2AAE12AEBVBlockPosB3AAUA1NB1AA1Z,
 	void* _this, Player* pPlayer, const Block* pBlk, const BlockPos* pBlkpos, bool _bool) {
-	Log::Player::Block("Event", pPlayer->getNameTag()->c_str(), pPlayer->getDimension(), "放置", pBlk->getLegacyBlock()->getFullName(), pBlkpos->getPosition());
-	original(_this, pPlayer, pBlk, pBlkpos, _bool);
+	Log::Player::Block("Event", pPlayer->getNameTag()->c_str(), pPlayer->getDimension(), "放置", pBlk->getLegacyBlock()->getBlockItemID(), pBlkpos->getPosition());
+	return original(_this, pPlayer, pBlk, pBlkpos, _bool);
 }
+
+
+
 // 玩家破坏方块
 THook(bool,
-	MSSYM_B2QUE20destroyBlockInternalB1AA8GameModeB2AAA4AEAAB1UE13NAEBVBlockPosB2AAA1EB1AA1Z,
-	GameMode* _this, const BlockPos* pBlkpos) {
-	auto pPlayer = *reinterpret_cast<Player * *>(reinterpret_cast<VA>(_this) + 8);
-	auto pBlk = pPlayer->getRegion()->getBlock(pBlkpos);
-	auto block_name = pBlk->getLegacyBlock()->getFullName();
-	bool ret = original(_this, pBlkpos);
+	MSSYM_B1QE13playerDestroyB1AE11BlockLegacyB2AAE15UEBAXAEAVPlayerB2AAE12AEBVBlockPosB2AAA9AEBVBlockB3AAAA1Z,
+	BlockLegacy* _this, Player* pPlayer, const BlockPos* pBlkpos, Block *pBlk) {
+	//auto pPlayer = *reinterpret_cast<Player * *>(reinterpret_cast<VA>(_this) + 8);
+	//auto pBlk = pPlayer->getRegion()->getBlock(pBlkpos);
+	auto block_id = pBlk->getLegacyBlock()->getBlockItemID();
+	bool ret = original(_this, pPlayer, pBlkpos, pBlk);
 	if (!ret)
 		return ret;
-	Log::Player::Block("Event", pPlayer->getNameTag()->c_str(), pPlayer->getDimension(), "破坏", block_name, pBlkpos->getPosition());
+	Log::Player::Block("Event", pPlayer->getNameTag()->c_str(), pPlayer->getDimension(), "破坏", block_id, pBlkpos->getPosition());
 	return ret;
 }
+
+
 // 玩家打开箱子
 THook(void,
 	MSSYM_B1QA9startOpenB1AE15ChestBlockActorB2AAE15UEAAXAEAVPlayerB3AAAA1Z,
