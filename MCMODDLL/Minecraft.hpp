@@ -18,15 +18,11 @@ struct SharedPtr {
 
 struct BlockLegacy {
 
-/*
+
 	auto getFullName() const {
-		std::string str("");
-		SYM_CALL(void (*)(const BlockLegacy*, std::string*),
-			MSSYM_B1QE11getFullNameB1AE11BlockLegacyB2AAA4QEBAB1QA2AVB2QDA5basicB1UA6stringB1AA2DUB2QDA4charB1UA6traitsB1AA1DB1AA3stdB2AAA1VB2QDA9allocatorB1AA1DB1AA12B2AAA3stdB2AAA2XZ,
-			this, &str);
-		return str;
+		return (std::string&) * (__int64*)((__int64)this + 104);
 	}
-*/
+
 
 	auto getBlockItemID() const {
 		return SYM_CALL(short (*)(const BlockLegacy*),
