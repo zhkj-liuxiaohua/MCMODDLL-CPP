@@ -184,6 +184,16 @@ THook(void,
 	Log::Player::Interaction("Event", pPlayer->getNameTag()->c_str(), pPlayer->getDimension(), "开启", "箱子", pBlkpos->getPosition());
 	original(_this, pPlayer);
 }
+// 玩家打开木桶
+THook(void,
+	MSSYM_B1QA9startOpenB1AE16BarrelBlockActorB2AAE15UEAAXAEAVPlayerB3AAAA1Z,
+	void* _this, Player* pPlayer) {
+	auto real_this = reinterpret_cast<void*>(reinterpret_cast<VA>(_this) - 248);
+	auto pBlkpos = reinterpret_cast<BlockActor*>(real_this)->getPosition();
+	Log::Player::Interaction("Event", pPlayer->getNameTag()->c_str(), pPlayer->getDimension(), "开启", "木桶", pBlkpos->getPosition());
+	original(_this, pPlayer);
+}
+
 // 玩家关闭箱子
 THook(__int64,
 	MSSYM_B1QA8stopOpenB1AE15ChestBlockActorB2AAE15UEAAXAEAVPlayerB3AAAA1Z,
@@ -191,6 +201,15 @@ THook(__int64,
 	auto real_this = reinterpret_cast<void*>(reinterpret_cast<VA>(_this) - 248);
 	auto pBlkpos = reinterpret_cast<BlockActor*>(real_this)->getPosition();
 	Log::Player::Interaction("Event", pPlayer->getNameTag()->c_str(), pPlayer->getDimension(), "关闭", "箱子", pBlkpos->getPosition());
+	return original(_this, pPlayer);
+}
+// 玩家关闭木桶
+THook(__int64,
+	MSSYM_B1QA8stopOpenB1AE16BarrelBlockActorB2AAE15UEAAXAEAVPlayerB3AAAA1Z,
+	void* _this, Player* pPlayer) {
+	auto real_this = reinterpret_cast<void*>(reinterpret_cast<VA>(_this) - 248);
+	auto pBlkpos = reinterpret_cast<BlockActor*>(real_this)->getPosition();
+	Log::Player::Interaction("Event", pPlayer->getNameTag()->c_str(), pPlayer->getDimension(), "关闭", "木桶", pBlkpos->getPosition());
 	return original(_this, pPlayer);
 }
 
