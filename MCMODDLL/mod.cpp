@@ -112,14 +112,23 @@ namespace Log {
 		}
 		void Block(const std::string& title, const std::string& player_name, int dimension, const std::string& operation, const std::string & block_name, INT32 coordinator[]) {
 			auto block_name_inner = block_name;
-//			if (block_id == 0)
-//				block_name_inner = -1;//"未知类型";
+			if (block_name_inner == "")
+				block_name_inner = "未知类型";
 			std::cout
 				<< Title(title) << " "
 				<< "玩家" << " " << player_name << " "
 				<< "在" <<Dimension(dimension)<< " " << Coordinator(coordinator) << " "
 				<< operation << " "
 				<< block_name_inner << " " << "方块。"
+				<< std::endl;
+		}
+		void Item(const std::string& title, const std::string& player_name, int dimension, const std::string& operation, const std::string& item_name, INT32 coordinator[]) {
+			std::cout
+				<< Title(title) << " "
+				<< "玩家" << " " << player_name << " "
+				<< "在" << Dimension(dimension) << " " << Coordinator(coordinator) << " "
+				<< operation << " "
+				<< UTF8ToGBK(item_name.data()) << " " << "物品。"
 				<< std::endl;
 		}
 		void Interaction(const std::string& title, const std::string& player_name, int dimension, const std::string& operation, const std::string& object_name, INT32 coordinator[]) {
@@ -150,6 +159,15 @@ namespace Log {
 		}
 
 	}
+
+	namespace Dieinfo {
+		using namespace Helper;
+		void showDie(const std::string& title, const std::string& mob_name, const std::string& src_name) {
+			std::cout
+				<< Title(title) << " "
+				<< UTF8ToGBK(mob_name.data()) << " 被 " << ((src_name != "") ? src_name : " ") << " 杀死了" << std::endl;
+		}
+	}
 };
 
 // 玩家放置方块
@@ -159,7 +177,19 @@ THook(__int64,
 	Log::Player::Block("Event", pPlayer->getNameTag()->c_str(), pPlayer->getDimension(), "放置", pBlk->getLegacyBlock()->getFullName(), pBlkpos->getPosition());
 	return original(_this, pPlayer, pBlk, pBlkpos, _bool);
 }
-
+// 玩家操作物品
+THook(bool,
+	MSSYM_B1QA9useItemOnB1AA8GameModeB2AAA4UEAAB1UE14NAEAVItemStackB2AAE12AEBVBlockPosB2AAA9EAEBVVec3B2AAA9PEBVBlockB3AAAA1Z,
+	void* _this, ItemStack* item, const BlockPos* pBlkpos, unsigned __int8 a4, void *v5, Block* pBlk) {
+	auto pPlayer = *reinterpret_cast<Player * *>(reinterpret_cast<VA>(_this) + 8);
+	std::string mstr = "";
+	item->getName(mstr);
+	bool ret = original(_this, item, pBlkpos, a4, v5, pBlk);
+	if (ret) {
+		Log::Player::Item("Event", pPlayer->getNameTag()->c_str(), pPlayer->getDimension(), "操作", mstr, pBlkpos->getPosition());
+	}
+	return ret;
+}
 // 玩家破坏方块
 THook(bool,
 	MSSYM_B2QUE20destroyBlockInternalB1AA8GameModeB2AAA4AEAAB1UE13NAEBVBlockPosB2AAA1EB1AA1Z,
@@ -232,6 +262,30 @@ THook(void,
 		Log::Player::Error("Warning", pPlayer->getNameTag()->c_str(), pPlayer->getDimension(), "使用了未知方块！");
 	original(_this, a2, a3);
 }
+
+// 命名生物死亡
+THook(void,
+	MSSYM_B1QA3dieB1AA3MobB2AAE26UEAAXAEBVActorDamageSourceB3AAAA1Z,
+	Mob* _this, void* dmsg) {
+	auto mob_name = _this->getNameTag()->c_str();
+	if (strlen(mob_name) != 0) {
+		char v72;
+		auto v7 = *((__int64*)_this + 417);
+		auto srActid = (__int64*)(*(__int64(__fastcall * *)(void*, char*))(*(__int64*)dmsg + 56i64))(
+			dmsg,
+			&v72);
+		auto SrAct = SYM_CALL(const Actor * (*)(__int64, __int64, char),
+			MSSYM_B1QE11fetchEntityB1AA5LevelB2AAE13QEBAPEAVActorB2AAE14UActorUniqueIDB3AAUA1NB1AA1Z,
+			v7, *srActid, 0);
+		auto sr_name = "";
+		if (SrAct) {
+			sr_name = SrAct->getNameTag()->c_str();
+		}
+		Log::Dieinfo::showDie("DeathInfo", mob_name, sr_name);
+	}
+	original(_this, dmsg);
+}
+
 
 // 下面两个函数不是必要的，你可以使用，也可以不使用。
 void mod_init() {

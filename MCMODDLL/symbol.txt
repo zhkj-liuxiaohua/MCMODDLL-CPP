@@ -21,6 +21,11 @@
 ?getBlockItemId@BlockLegacy@@QEBAFXZ
 # 玩家破坏传统方块
 ?playerDestroy@BlockLegacy@@UEBAXAEAVPlayer@@AEBVBlockPos@@AEBVBlock@@@Z
+# 玩家破坏展示框
+?attack@ItemFrameBlock@@UEBA_NPEAVPlayer@@AEBVBlockPos@@@Z
+?playerWillDestroy@ItemFrameBlock@@UEBA_NAEAVPlayer@@AEBVBlockPos@@AEBVBlock@@@Z
+# 物品从展示框掉落
+?dropFramedItem@ItemFrameBlockActor@@QEAAXAEAVBlockSource@@_N@Z
 
 # Block：获取BlockLegacy
 ?getLegacyBlock@Block@@QEBAAEBVBlockLegacy@@XZ
@@ -40,11 +45,15 @@
 ?stopOpen@BarrelBlockActor@@UEAAXAEAVPlayer@@@Z
 ?stopOpen@FurnaceBlockActor@@UEAAXAEAVPlayer@@@Z
 
-# BlockEventListener：玩家放置方块
+# BlockEventCoordinator：玩家放置方块
 # 过期方法 ?onBlockPlacedByPlayer@BlockEventCoordinator@@QEAAXAEAVPlayer@@AEBVBlock@@AEBVBlockPos@@_N@Z
+?sendBlockPlacedByPlayer@BlockEventCoordinator@@QEAAXAEAVPlayer@@AEBVBlock@@AEBVBlockPos@@_N@Z
 ?onBlockPlacedByPlayer@BlockEventListener@@UEAA?AW4EventResult@@AEAVPlayer@@AEBVBlock@@AEBVBlockPos@@_N@Z
 ?onBlockPlacedByPlayer@VanillaServerGameplayEventListener@@UEAA?AW4EventResult@@AEAVPlayer@@AEBVBlock@@AEBVBlockPos@@_N@Z
 ?onBlockPlacedByPlayer@ScriptServerBlockEventListener@@UEAA?AW4EventResult@@AEAVPlayer@@AEBVBlock@@AEBVBlockPos@@_N@Z
+
+# 玩家放置物品
+?useItemOn@GameMode@@UEAA_NAEAVItemStack@@AEBVBlockPos@@EAEBVVec3@@PEBVBlock@@@Z
 
 # LevelContainerManagerModel：箱子内物品槽设置
 ?setSlot@LevelContainerManagerModel@@UEAAXHAEBUContainerItemStack@@@Z
@@ -58,5 +67,10 @@
 ?_destroyBlockInternal@GameMode@@AEAA_NAEBVBlockPos@@E@Z
 
 ?getBlock@BlockSource@@QEBAAEBVBlock@@AEBVBlockPos@@@Z
+
+# 记录生物死亡信息
+?die@Mob@@UEAAXAEBVActorDamageSource@@@Z
+# 查询指定角色
+?fetchEntity@Level@@QEBAPEAVActor@@UActorUniqueID@@_N@Z
 
 # 文件结束
