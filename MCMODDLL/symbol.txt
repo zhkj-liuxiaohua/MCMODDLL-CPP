@@ -36,6 +36,20 @@
 # 获取维度
 ?getDimensionId@Actor@@UEBA?AV?$AutomaticID@VDimension@@H@@XZ
 
+# 玩家正在切换维度
+?_playerChangeDimension@Level@@AEAA_NPEAVPlayer@@AEAVChangeDimensionRequest@@@Z
+
+# 玩家瞬移
+?teleportTo@Player@@UEAAXAEBVVec3@@_NHH@Z
+
+# 获取服务器玩家
+?_getServerPlayer@ServerNetworkHandler@@AEAAPEAVServerPlayer@@AEBVNetworkIdentifier@@E@Z
+# 玩家行动
+?handle@ServerNetworkHandler@@UEAAXAEBVNetworkIdentifier@@AEBVPlayerActionPacket@@@Z
+# 玩家移动
+?handle@ServerNetworkHandler@@UEAAXAEBVNetworkIdentifier@@AEBVMovePlayerPacket@@@Z
+
+
 # 各种箱子被玩家打开
 ?startOpen@ChestBlockActor@@UEAAXAEAVPlayer@@@Z
 ?startOpen@BarrelBlockActor@@UEAAXAEAVPlayer@@@Z

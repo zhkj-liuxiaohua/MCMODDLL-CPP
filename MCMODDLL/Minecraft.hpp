@@ -77,6 +77,10 @@ struct Actor {
 			MSSYM_B1QE10getNameTagB1AA5ActorB2AAA8UEBAAEBVB2QDA5basicB1UA6stringB1AA2DUB2QDA4charB1UA6traitsB1AA1DB1AA3stdB2AAA1VB2QDA9allocatorB1AA1DB1AA12B2AAA3stdB2AAA2XZ,
 			this);
 	}
+
+	const byte isStand() {
+		return *reinterpret_cast<byte *>(reinterpret_cast<VA>(this) + 360);
+	}
 };
 struct Mob
 	:Actor {

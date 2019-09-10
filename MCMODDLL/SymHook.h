@@ -47,6 +47,58 @@ namespace SymHook{
 	// [符号] ?getDimensionId@Actor@@UEBA?AV?$AutomaticID@VDimension@@H@@XZ
 	constexpr RVA MSSYM_B1QE14getDimensionIdB1AA5ActorB2AAA4UEBAB1QA2AVB2QDE11AutomaticIDB1AE10VDimensionB2AAA1HB2AAA2XZ = 0x003EBD70;
 
+	// [原型] private: bool __cdecl Level::_playerChangeDimension(class Player * __ptr64,class ChangeDimensionRequest & __ptr64) __ptr64
+	// [符号] ?_playerChangeDimension@Level@@AEAA_NPEAVPlayer@@AEAVChangeDimensionRequest@@@Z
+	constexpr RVA MSSYM_B2QUE21playerChangeDimensionB1AA5LevelB2AAA4AEAAB1UE11NPEAVPlayerB2AAE26AEAVChangeDimensionRequestB3AAAA1Z = 0x0085F390;
+
+	// [原型] public: virtual void __cdecl Player::teleportTo(class Vec3 const & __ptr64,bool,int,int) __ptr64
+	// [符号] ?teleportTo@Player@@UEAAXAEBVVec3@@_NHH@Z
+	constexpr RVA MSSYM_B1QE10teleportToB1AA6PlayerB2AAE13UEAAXAEBVVec3B3AAUA3NHHB1AA1Z = 0x00594870;
+
+	// [原型] private: class ServerPlayer * __ptr64 __cdecl ServerNetworkHandler::_getServerPlayer(class NetworkIdentifier const & __ptr64,unsigned char) __ptr64
+	// [符号] ?_getServerPlayer@ServerNetworkHandler@@AEAAPEAVServerPlayer@@AEBVNetworkIdentifier@@E@Z
+	constexpr RVA MSSYM_B2QUE15getServerPlayerB1AE20ServerNetworkHandlerB2AAE20AEAAPEAVServerPlayerB2AAE21AEBVNetworkIdentifierB2AAA1EB1AA1Z = 0x00251DF0;
+
+	// [原型] public: virtual void __cdecl ServerNetworkHandler::handle(class NetworkIdentifier const & __ptr64,class PlayerActionPacket const & __ptr64) __ptr64
+	// [符号] ?handle@ServerNetworkHandler@@UEAAXAEBVNetworkIdentifier@@AEBVPlayerActionPacket@@@Z
+	constexpr RVA MSSYM_B1QA6handleB1AE20ServerNetworkHandlerB2AAE26UEAAXAEBVNetworkIdentifierB2AAE22AEBVPlayerActionPacketB3AAAA1Z = 0x0024EEA0;
+
+	// [原型] public: virtual void __cdecl ServerNetworkHandler::handle(class NetworkIdentifier const & __ptr64,class MovePlayerPacket const & __ptr64) __ptr64
+	// [符号] ?handle@ServerNetworkHandler@@UEAAXAEBVNetworkIdentifier@@AEBVMovePlayerPacket@@@Z
+	constexpr RVA MSSYM_B1QA6handleB1AE20ServerNetworkHandlerB2AAE26UEAAXAEBVNetworkIdentifierB2AAE20AEBVMovePlayerPacketB3AAAA1Z = 0x0024DC70;
+
+	// [原型] public: virtual void __cdecl Player::jumpFromGround(void) __ptr64
+	// [符号] ?jumpFromGround@Player@@UEAAXXZ
+	constexpr RVA MSSYM_B1QE14jumpFromGroundB1AA6PlayerB2AAA7UEAAXXZ = 0x00597800;
+
+	// [原型] public: void __cdecl Player::handleJumpEffects(void) __ptr64
+	// [符号] ?handleJumpEffects@Player@@QEAAXXZ
+	constexpr RVA MSSYM_B1QE17handleJumpEffectsB1AA6PlayerB2AAA7QEAAXXZ = 0x005976B0;
+
+	// [原型] protected: virtual void __cdecl Player::onBounceStarted(class BlockPos const & __ptr64,class Block const & __ptr64) __ptr64
+	// [符号] ?onBounceStarted@Player@@MEAAXAEBVBlockPos@@AEBVBlock@@@Z
+	constexpr RVA MSSYM_B1QE15onBounceStartedB1AA6PlayerB2AAE17MEAAXAEBVBlockPosB2AAA9AEBVBlockB3AAAA1Z = 0x00596B20;
+
+	// [原型] public: void __cdecl Player::stopGliding(void) __ptr64
+	// [符号] ?stopGliding@Player@@QEAAXXZ
+	constexpr RVA MSSYM_B1QE11stopGlidingB1AA6PlayerB2AAA7QEAAXXZ = 0x005A3930;
+
+	// [原型] public: virtual void __cdecl Player::travel(float,float,float) __ptr64
+	// [符号] ?travel@Player@@UEAAXMMM@Z
+	constexpr RVA MSSYM_B1QA6travelB1AA6PlayerB2AAA8UEAAXMMMB1AA1Z = 0x00597390;
+
+	// [原型] public: void __cdecl Actor::setCanFly(bool) __ptr64
+	// [符号] ?setCanFly@Actor@@QEAAX_N@Z
+	constexpr RVA MSSYM_B1QA9setCanFlyB1AA5ActorB2AAA5QEAAXB1UA1NB1AA1Z = 0x003DF220;
+
+	// [原型] public: __cdecl MovePlayerPacket::MovePlayerPacket(class Player & __ptr64,enum Player::PositionMode,int,int) __ptr64
+	// [符号] ??0MovePlayerPacket@@QEAA@AEAVPlayer@@W4PositionMode@1@HH@Z
+	constexpr RVA MSSYM_B2QQE170MovePlayerPacketB2AAA4QEAAB1AE10AEAVPlayerB2AAE14W4PositionModeB1AA11B1AA2HHB1AA1Z = 0x00163B20;
+
+	// [原型] protected: virtual void __cdecl Player::onMovePlayerPacketNormal(class Vec3 const & __ptr64,class Vec2 const & __ptr64,float) __ptr64
+	// [符号] ?onMovePlayerPacketNormal@Player@@MEAAXAEBVVec3@@AEBVVec2@@M@Z
+	constexpr RVA MSSYM_B1QE24onMovePlayerPacketNormalB1AA6PlayerB2AAE13MEAAXAEBVVec3B2AAA8AEBVVec2B2AAA1MB1AA1Z = 0x0059E620;
+
 	// [原型] public: virtual void __cdecl ChestBlockActor::startOpen(class Player & __ptr64) __ptr64
 	// [符号] ?startOpen@ChestBlockActor@@UEAAXAEAVPlayer@@@Z
 	constexpr RVA MSSYM_B1QA9startOpenB1AE15ChestBlockActorB2AAE15UEAAXAEAVPlayerB3AAAA1Z = 0x006EB510;

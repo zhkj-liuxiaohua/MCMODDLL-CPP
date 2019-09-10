@@ -110,34 +110,34 @@ namespace Log {
 				<< "在" << Dimension(dimension)
 				<< content << std::endl;
 		}
-		void Block(const std::string& title, const std::string& player_name, int dimension, const std::string& operation, const std::string & block_name, INT32 coordinator[]) {
+		void Block(const std::string& title, const std::string& player_name, char isStand, int dimension, const std::string& operation, const std::string & block_name, INT32 coordinator[]) {
 			auto block_name_inner = block_name;
 			if (block_name_inner == "")
 				block_name_inner = "未知类型";
 			std::cout
 				<< Title(title) << " "
-				<< "玩家" << " " << player_name << " "
+				<< "玩家" << " " << player_name << " " << (!isStand ? "悬空地 " : "")
 				<< "在" <<Dimension(dimension)<< " " << Coordinator(coordinator) << " "
 				<< operation << " "
 				<< block_name_inner << " " << "方块。"
 				<< std::endl;
 		}
-		void Item(const std::string& title, const std::string& player_name, int dimension, const std::string& operation, const std::string& item_name, INT32 coordinator[]) {
+		void Item(const std::string& title, const std::string& player_name, char isStand, int dimension, const std::string& operation, const std::string& item_name, INT32 coordinator[]) {
 			std::cout
 				<< Title(title) << " "
-				<< "玩家" << " " << player_name << " "
+				<< "玩家" << " " << player_name << " " << (!isStand ? "悬空地 " : "")
 				<< "在" << Dimension(dimension) << " " << Coordinator(coordinator) << " "
 				<< operation << " "
 				<< UTF8ToGBK(item_name.data()) << " " << "物品。"
 				<< std::endl;
 		}
-		void Interaction(const std::string& title, const std::string& player_name, int dimension, const std::string& operation, const std::string& object_name, INT32 coordinator[]) {
+		void Interaction(const std::string& title, const std::string& player_name, char isStand, int dimension, const std::string& operation, const std::string& object_name, INT32 coordinator[]) {
 			std::cout
 				<< Title(title) << " "
-				<< "玩家" << " " << player_name << " "
-				<< operation
+				<< "玩家" << " " << player_name << " " << (!isStand ? "悬空地 " : "")
+				<< operation 
 				<< "在" << Dimension(dimension) << " " << Coordinator(coordinator) << " " << "的"
-				<< object_name << " " << "。"
+				<< object_name << "。"
 				<< std::endl;
 		}
 		void Container_In(const std::string& title, const std::string& player_name, int dimension, int slot, int count, const std::string& object_name) {
@@ -158,6 +158,14 @@ namespace Log {
 				<< std::endl;
 		}
 
+		void ChangeDimension(const std::string& title, const std::string& player_name, int dimension) {
+			std::cout
+				<< Title(title) << " "
+				<< "玩家 " << player_name << " 改变维度至 "
+				<< Dimension(dimension) << "。"
+				<< std::endl;
+		}
+
 	}
 
 	namespace Dieinfo {
@@ -174,7 +182,7 @@ namespace Log {
 THook(__int64,
 	MSSYM_B1QE21onBlockPlacedByPlayerB1AE34VanillaServerGameplayEventListenerB2AAA4UEAAB1QE14AW4EventResultB2AAE10AEAVPlayerB2AAA9AEBVBlockB2AAE12AEBVBlockPosB3AAUA1NB1AA1Z,
 	void* _this, Player* pPlayer, const Block* pBlk, const BlockPos* pBlkpos, bool _bool) {
-	Log::Player::Block("Event", pPlayer->getNameTag()->c_str(), pPlayer->getDimension(), "放置", pBlk->getLegacyBlock()->getFullName(), pBlkpos->getPosition());
+	Log::Player::Block("Event", pPlayer->getNameTag()->c_str(), pPlayer->isStand(), pPlayer->getDimension(), "放置", pBlk->getLegacyBlock()->getFullName(), pBlkpos->getPosition());
 	return original(_this, pPlayer, pBlk, pBlkpos, _bool);
 }
 // 玩家操作物品
@@ -186,7 +194,7 @@ THook(bool,
 	item->getName(mstr);
 	bool ret = original(_this, item, pBlkpos, a4, v5, pBlk);
 	if (ret) {
-		Log::Player::Item("Event", pPlayer->getNameTag()->c_str(), pPlayer->getDimension(), "操作", mstr, pBlkpos->getPosition());
+		Log::Player::Item("Event", pPlayer->getNameTag()->c_str(), pPlayer->isStand(), pPlayer->getDimension(), "操作", mstr, pBlkpos->getPosition());
 	}
 	return ret;
 }
@@ -201,7 +209,7 @@ THook(bool,
 	bool ret = original(_this, pBlkpos);
 	if (!ret)
 		return ret;
-	Log::Player::Block("Event", pPlayer->getNameTag()->c_str(), pPlayer->getDimension(), "破坏", block_name, pBlkpos->getPosition());
+	Log::Player::Block("Event", pPlayer->getNameTag()->c_str(), pPlayer->isStand(), pPlayer->getDimension(), "破坏", block_name, pBlkpos->getPosition());
 	return ret;
 }
 
@@ -211,7 +219,7 @@ THook(void,
 	void* _this, Player* pPlayer) {
 	auto real_this = reinterpret_cast<void*>(reinterpret_cast<VA>(_this) - 248);
 	auto pBlkpos = reinterpret_cast<BlockActor*>(real_this)->getPosition();
-	Log::Player::Interaction("Event", pPlayer->getNameTag()->c_str(), pPlayer->getDimension(), "开启", "箱子", pBlkpos->getPosition());
+	Log::Player::Interaction("Event", pPlayer->getNameTag()->c_str(), pPlayer->isStand(), pPlayer->getDimension(), "开启", "箱子", pBlkpos->getPosition());
 	original(_this, pPlayer);
 }
 // 玩家打开木桶
@@ -220,17 +228,16 @@ THook(void,
 	void* _this, Player* pPlayer) {
 	auto real_this = reinterpret_cast<void*>(reinterpret_cast<VA>(_this) - 248);
 	auto pBlkpos = reinterpret_cast<BlockActor*>(real_this)->getPosition();
-	Log::Player::Interaction("Event", pPlayer->getNameTag()->c_str(), pPlayer->getDimension(), "开启", "木桶", pBlkpos->getPosition());
+	Log::Player::Interaction("Event", pPlayer->getNameTag()->c_str(), pPlayer->isStand(), pPlayer->getDimension(), "开启", "木桶", pBlkpos->getPosition());
 	original(_this, pPlayer);
 }
-
 // 玩家关闭箱子
 THook(__int64,
 	MSSYM_B1QA8stopOpenB1AE15ChestBlockActorB2AAE15UEAAXAEAVPlayerB3AAAA1Z,
 	void* _this, Player * pPlayer) {
 	auto real_this = reinterpret_cast<void*>(reinterpret_cast<VA>(_this) - 248);
 	auto pBlkpos = reinterpret_cast<BlockActor*>(real_this)->getPosition();
-	Log::Player::Interaction("Event", pPlayer->getNameTag()->c_str(), pPlayer->getDimension(), "关闭", "箱子", pBlkpos->getPosition());
+	Log::Player::Interaction("Event", pPlayer->getNameTag()->c_str(), pPlayer->isStand(), pPlayer->getDimension(), "关闭", "箱子", pBlkpos->getPosition());
 	return original(_this, pPlayer);
 }
 // 玩家关闭木桶
@@ -239,10 +246,11 @@ THook(__int64,
 	void* _this, Player* pPlayer) {
 	auto real_this = reinterpret_cast<void*>(reinterpret_cast<VA>(_this) - 248);
 	auto pBlkpos = reinterpret_cast<BlockActor*>(real_this)->getPosition();
-	Log::Player::Interaction("Event", pPlayer->getNameTag()->c_str(), pPlayer->getDimension(), "关闭", "木桶", pBlkpos->getPosition());
+	Log::Player::Interaction("Event", pPlayer->getNameTag()->c_str(), pPlayer->isStand(), pPlayer->getDimension(), "关闭", "木桶", pBlkpos->getPosition());
 	return original(_this, pPlayer);
 }
 
+// 玩家放入取出数量
 THook(void,
 	MSSYM_B1QA7setSlotB1AE26LevelContainerManagerModelB2AAE28UEAAXHAEBUContainerItemStackB3AAAA1Z,
 	LevelContainerManagerModel * _this, int a2, ContainerItemStack * a3) {
@@ -261,6 +269,14 @@ THook(void,
 	} else
 		Log::Player::Error("Warning", pPlayer->getNameTag()->c_str(), pPlayer->getDimension(), "使用了未知方块！");
 	original(_this, a2, a3);
+}
+
+// 玩家切换维度
+THook(bool,
+	MSSYM_B2QUE21playerChangeDimensionB1AA5LevelB2AAA4AEAAB1UE11NPEAVPlayerB2AAE26AEAVChangeDimensionRequestB3AAAA1Z,
+	void* _this, Player* pPlayer, void* req) {
+	if (original(_this, pPlayer, req))
+		Log::Player::ChangeDimension("Dimension", pPlayer->getNameTag()->c_str(), pPlayer->getDimension());
 }
 
 // 命名生物死亡
