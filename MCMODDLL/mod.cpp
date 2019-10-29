@@ -203,7 +203,7 @@ THook(bool,
 	MSSYM_B2QUE20destroyBlockInternalB1AA8GameModeB2AAA4AEAAB1UE13NAEBVBlockPosB2AAA1EB1AA1Z,
 	void * _this, const BlockPos* pBlkpos) {
 	auto pPlayer = *reinterpret_cast<Player * *>(reinterpret_cast<VA>(_this) + 8);
-	auto pBlockSource = *(BlockSource * *)(*((__int64*)_this + 1) + 3320i64);
+	auto pBlockSource = *(BlockSource * *)(*((__int64*)_this + 1) + 840i64);
 	auto pBlk = pBlockSource->getBlock(pBlkpos);
 	auto block_name = pBlk->getLegacyBlock()->getFullName();
 	bool ret = original(_this, pBlkpos);
@@ -252,7 +252,7 @@ THook(__int64,
 
 // 玩家放入取出数量
 THook(void,
-	MSSYM_B1QA7setSlotB1AE26LevelContainerManagerModelB2AAE28UEAAXHAEBUContainerItemStackB3AAAA1Z,
+	MSSYM_B1QA7setSlotB1AE26LevelContainerManagerModelB2AAE28UEAAXHAEBUContainerItemStackB3AAUA1NB1AA1Z,
 	LevelContainerManagerModel * _this, int a2, ContainerItemStack * a3) {
 	auto slot = a2;
 	auto pItemStack = a3;
@@ -275,8 +275,10 @@ THook(void,
 THook(bool,
 	MSSYM_B2QUE21playerChangeDimensionB1AA5LevelB2AAA4AEAAB1UE11NPEAVPlayerB2AAE26AEAVChangeDimensionRequestB3AAAA1Z,
 	void* _this, Player* pPlayer, void* req) {
-	if (original(_this, pPlayer, req))
+	bool ret = original(_this, pPlayer, req);
+	if (ret)
 		Log::Player::ChangeDimension("Dimension", pPlayer->getNameTag()->c_str(), pPlayer->getDimension());
+	return ret;
 }
 
 // 命名生物死亡
@@ -286,9 +288,12 @@ THook(void,
 	auto mob_name = _this->getNameTag()->c_str();
 	if (strlen(mob_name) != 0) {
 		char v72;
-		auto v7 = *((__int64*)_this + 417);
-		auto srActid = (__int64*)(*(__int64(__fastcall * *)(void*, char*))(*(__int64*)dmsg + 56i64))(
-			dmsg,
+		__int64  v2[2];
+		v2[0] = (__int64)_this;
+		v2[1] = (__int64)dmsg;
+		auto v7 = *((__int64*)(v2[0] + 856));
+		auto srActid = (__int64*)(*(__int64(__fastcall * *)(__int64, char*))(*(__int64*)v2[1] + 56i64))(
+			v2[1],
 			&v72);
 		auto SrAct = SYM_CALL(const Actor * (*)(__int64, __int64, char),
 			MSSYM_B1QE11fetchEntityB1AA5LevelB2AAE13QEBAPEAVActorB2AAE14UActorUniqueIDB3AAUA1NB1AA1Z,

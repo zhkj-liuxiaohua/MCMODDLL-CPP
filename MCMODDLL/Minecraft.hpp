@@ -69,7 +69,7 @@ struct Actor {
 		return *reinterpret_cast<BlockSource**>(reinterpret_cast<VA>(this) + 414*sizeof(void*));
 	}
 	int getDimension() {
-		return *reinterpret_cast<int*>(reinterpret_cast<VA>(this) + 172);
+		return *reinterpret_cast<int*>(reinterpret_cast<VA>(this) + 188);
 	}
 
 	const std::string* getNameTag() const {
@@ -79,7 +79,7 @@ struct Actor {
 	}
 
 	const byte isStand() {
-		return *reinterpret_cast<byte *>(reinterpret_cast<VA>(this) + 360);
+		return *reinterpret_cast<byte *>(reinterpret_cast<VA>(this) + 376);
 	}
 };
 struct Mob
@@ -105,13 +105,13 @@ struct LevelContainerManagerModel
 struct ItemStack {
 	int getId() {
 		return SYM_CALL(int(*)(ItemStack*),
-			MSSYM_B1QA5getIdB1AA9ItemStackB2AAA7QEBAFXZ,
+			MSSYM_B1QA5getIdB1AE13ItemStackBaseB2AAA7QEBAFXZ,
 			this);
 	}
 
 	INT64 getName(std::string& str) {
 		return SYM_CALL(INT64(*)(decltype(this), decltype(str)),
-			MSSYM_B1QA7getNameB1AA9ItemStackB2AAA4QEBAB1QA2AVB2QDA5basicB1UA6stringB1AA2DUB2QDA4charB1UA6traitsB1AA1DB1AA3stdB2AAA1VB2QDA9allocatorB1AA1DB1AA12B2AAA3stdB2AAA2XZ,
+			MSSYM_B1QA7getNameB1AE13ItemStackBaseB2AAA4QEBAB1QA2AVB2QDA5basicB1UA6stringB1AA2DUB2QDA4charB1UA6traitsB1AA1DB1AA3stdB2AAA1VB2QDA9allocatorB1AA1DB1AA12B2AAA3stdB2AAA2XZ,
 			this, str);
 	}
 	UINT8 getStackSize() {
