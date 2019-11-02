@@ -79,6 +79,8 @@
 ?getId@ItemStackBase@@QEBAFXZ
 # 获取名字
 ?getName@ItemStackBase@@QEBA?AV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@XZ
+# 获取数量
+?getCount@ContainerItemStack@@QEBAHXZ
 
 ?_destroyBlockInternal@GameMode@@AEAA_NAEBVBlockPos@@E@Z
 

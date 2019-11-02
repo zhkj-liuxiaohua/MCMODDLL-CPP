@@ -114,8 +114,10 @@ struct ItemStack {
 			MSSYM_B1QA7getNameB1AE13ItemStackBaseB2AAA4QEBAB1QA2AVB2QDA5basicB1UA6stringB1AA2DUB2QDA4charB1UA6traitsB1AA1DB1AA3stdB2AAA1VB2QDA9allocatorB1AA1DB1AA12B2AAA3stdB2AAA2XZ,
 			this, str);
 	}
-	UINT8 getStackSize() {
-		return *reinterpret_cast<UINT8*>(reinterpret_cast<VA>(this) + 26);
+	int getStackSize() {
+		return SYM_CALL(int(*)(ItemStack*),
+			MSSYM_B1QA8getCountB1AE18ContainerItemStackB2AAA7QEBAHXZ,
+			this);
 	}
 };
 

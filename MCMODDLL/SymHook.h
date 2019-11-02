@@ -127,6 +127,10 @@ namespace SymHook{
 	// [符号] ?getName@ItemStackBase@@QEBA?AV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@XZ
 	constexpr RVA MSSYM_B1QA7getNameB1AE13ItemStackBaseB2AAA4QEBAB1QA2AVB2QDA5basicB1UA6stringB1AA2DUB2QDA4charB1UA6traitsB1AA1DB1AA3stdB2AAA1VB2QDA9allocatorB1AA1DB1AA12B2AAA3stdB2AAA2XZ = 0x00731030;
 
+	// [原型] public: int __cdecl ContainerItemStack::getCount(void)const __ptr64
+	// [符号] ?getCount@ContainerItemStack@@QEBAHXZ
+	constexpr RVA MSSYM_B1QA8getCountB1AE18ContainerItemStackB2AAA7QEBAHXZ = 0x0069C220;
+
 	// [原型] private: bool __cdecl GameMode::_destroyBlockInternal(class BlockPos const & __ptr64,unsigned char) __ptr64
 	// [符号] ?_destroyBlockInternal@GameMode@@AEAA_NAEBVBlockPos@@E@Z
 	constexpr RVA MSSYM_B2QUE20destroyBlockInternalB1AA8GameModeB2AAA4AEAAB1UE13NAEBVBlockPosB2AAA1EB1AA1Z = 0x006C6D00;
