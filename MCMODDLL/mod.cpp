@@ -28,24 +28,24 @@ THook(void,							// 函数返回类型
 #include <string>
 #include <chrono>
 
-std::map<short, std::string> BlockRegMap;
+//std::map<short, std::string> BlockRegMap;
 
 static std::string UTF8ToGBK(const char* strUTF8);
 
 // 注册方块的时候构建方块ID查找表
-THook(void,
-	MSSYM_B1QE14registerBlocksB1AE17VanillaBlockTypesB2AAA5YAXXZ,
-	void* _this) {
-	original(_this);
-	std::unordered_map<std::string, SharedPtr<BlockLegacy>>* pMap;
-	pMap = SYM_PTR(decltype(pMap), MSSYM_MD5_ceb8b47184006e4d7622b39978535236);
-	for (auto i = pMap->begin(); i != pMap->end(); ++i) {
-		auto id = i->second->getBlockItemID();
-		auto str = std::string("Mincraft: " + id);
-			//i->second->getFullName();
-		BlockRegMap.emplace(id, str);
-	}
-}
+//THook(void,
+//	MSSYM_B1QE14registerBlocksB1AE17VanillaBlockTypesB2AAA5YAXXZ,
+//	void* _this) {
+//	original(_this);
+//	std::unordered_map<std::string, SharedPtr<BlockLegacy>>* pMap;
+//	pMap = SYM_PTR(decltype(pMap), MSSYM_MD5_ceb8b47184006e4d7622b39978535236);
+//	for (auto i = pMap->begin(); i != pMap->end(); ++i) {
+//		auto id = i->second->getBlockItemID();
+//		auto str = std::string("Mincraft: " + id);
+//			//i->second->getFullName();
+//		BlockRegMap.emplace(id, str);
+//	}
+//}
 
 namespace Log {
 	namespace Helper {
@@ -163,6 +163,15 @@ namespace Log {
 				<< Title(title) << " "
 				<< "玩家 " << player_name << " 改变维度至 "
 				<< Dimension(dimension) << "。"
+				<< std::endl;
+		}
+
+		void ChatMessage(const std::string& title, const std::string& player_name, const std::string& target,
+			const std::string& msg, const std::string& chat_style) {
+			std::cout
+				<< Title(title) << " "
+				<< "玩家 " << player_name << (target != "" ? " 悄悄地对 " + target : "")
+				<< " 说:" << UTF8ToGBK(msg.data())
 				<< std::endl;
 		}
 
@@ -306,6 +315,15 @@ THook(void,
 	}
 	original(_this, dmsg);
 }
+
+// 聊天消息
+THook(void,
+	MSSYM_MD5_ad251f2fd8c27eb22c0c01209e8df83c,
+	void * _this, std::string& player_name, std::string& target, std::string& msg, std::string& char_style) {
+	original(_this, player_name, target, msg, char_style);
+	Log::Player::ChatMessage("Chat", player_name, target, msg, char_style);
+}
+
 
 
 // 下面两个函数不是必要的，你可以使用，也可以不使用。

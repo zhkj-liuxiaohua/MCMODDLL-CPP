@@ -91,4 +91,7 @@
 # 查询指定角色
 ?fetchEntity@Level@@QEBAPEAVActor@@UActorUniqueID@@_N@Z
 
+# 聊天信息接收
+?fireEventPlayerMessage@MinecraftEventing@@AEAAXAEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@000@Z
+
 # 文件结束

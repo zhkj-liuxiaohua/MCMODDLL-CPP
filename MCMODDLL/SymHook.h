@@ -147,6 +147,10 @@ namespace SymHook{
 	// [符号] ?fetchEntity@Level@@QEBAPEAVActor@@UActorUniqueID@@_N@Z
 	constexpr RVA MSSYM_B1QE11fetchEntityB1AA5LevelB2AAE13QEBAPEAVActorB2AAE14UActorUniqueIDB3AAUA1NB1AA1Z = 0x00968740;
 
+	// [原型] private: void __cdecl MinecraftEventing::fireEventPlayerMessage(class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const & __ptr64,class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const & __ptr64,class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const & __ptr64,class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const & __ptr64) __ptr64
+	// [符号] ?fireEventPlayerMessage@MinecraftEventing@@AEAAXAEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@000@Z
+	constexpr RVA MSSYM_MD5_ad251f2fd8c27eb22c0c01209e8df83c = 0x0024A380;
+
 }
 
 // 文件结束
