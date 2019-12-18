@@ -88,6 +88,14 @@ namespace Log {
 				+ std::to_string(coordinator[2]) + ")";
 		}
 
+		auto Pos(Vec3* v) {
+			return "(" +
+				std::to_string(int(v->x)) + ", "
+				+ std::to_string(int(v->y)) + ", "
+				+ std::to_string(int(v->z))
+				+ ")";
+		}
+
 		auto Dimension(int v) {
 			switch (v) {
 			case 0: return u8"主世界";
@@ -156,11 +164,11 @@ namespace Log {
 				<< std::endl;
 		}
 
-		void ChangeDimension(const std::string& title, const std::string& player_name, int dimension) {
+		void ChangeDimension(const std::string& title, const std::string& player_name, int dimension, Vec3 *v) {
 			std::cout
 				<< Title(title) << " "
 				<< u8"玩家 " << player_name << u8" 改变维度至 "
-				<< Dimension(dimension) << u8"。"
+				<< Dimension(dimension) << " " << Pos(v) + u8"。"
 				<< std::endl;
 		}
 
@@ -284,7 +292,7 @@ THook(bool,
 	void* _this, Player* pPlayer, void* req) {
 	bool ret = original(_this, pPlayer, req);
 	if (ret)
-		Log::Player::ChangeDimension("Dimension", pPlayer->getNameTag()->c_str(), pPlayer->getDimension());
+		Log::Player::ChangeDimension("Dimension", pPlayer->getNameTag()->c_str(), pPlayer->getDimension(), pPlayer->getPos());
 	return ret;
 }
 

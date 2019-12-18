@@ -35,6 +35,8 @@
 ?getNameTag@Actor@@UEBAAEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@XZ
 # 获取维度
 ?getDimensionId@Actor@@UEBA?AV?$AutomaticID@VDimension@@H@@XZ
+# 获取位置
+?getPos@Actor@@UEBAAEBVVec3@@XZ
 
 # 玩家正在切换维度
 ?_playerChangeDimension@Level@@AEAA_NPEAVPlayer@@AEAVChangeDimensionRequest@@@Z
