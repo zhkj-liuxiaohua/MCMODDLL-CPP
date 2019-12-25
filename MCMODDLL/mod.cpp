@@ -327,7 +327,8 @@ THook(void,
 	MSSYM_MD5_ad251f2fd8c27eb22c0c01209e8df83c,
 	void * _this, std::string& player_name, std::string& target, std::string& msg, std::string& char_style) {
 	original(_this, player_name, target, msg, char_style);
-	Log::Player::ChatMessage("Chat", player_name, target, msg, char_style);
+	if (char_style != "title")
+		Log::Player::ChatMessage("Chat", player_name, target, msg, char_style);
 }
 
 
