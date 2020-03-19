@@ -1,6 +1,6 @@
 /*
-¸ÃÎÄ¼ş´æ·ÅMinecraftÄÚ²¿ÄæÏò·ÖÎöµÃµ½µÄÊı¾İ½á¹¹£¬ÓÉÓÚÓÃÍ¾ÏŞÖÆ£¬ÕâÀïµÄ½á¹¹¿ÉÄÜ²»ÍêÕû¡£
-Èç¹ûÎ´À´°æ±¾£¨¸ßÓÚ1.11.4.2°æ±¾£©¸üĞÂµ¼ÖÂÊı¾İ½á¹¹±ä»¯£¬ÇëÄú×ÔĞĞ·ÖÎöÔÙĞŞÕı¡£
+è¯¥æ–‡ä»¶å­˜æ”¾Minecraftå†…éƒ¨é€†å‘åˆ†æå¾—åˆ°çš„æ•°æ®ç»“æ„ï¼Œç”±äºç”¨é€”é™åˆ¶ï¼Œè¿™é‡Œçš„ç»“æ„å¯èƒ½ä¸å®Œæ•´ã€‚
+å¦‚æœæœªæ¥ç‰ˆæœ¬ï¼ˆé«˜äº1.11.4.2ç‰ˆæœ¬ï¼‰æ›´æ–°å¯¼è‡´æ•°æ®ç»“æ„å˜åŒ–ï¼Œè¯·æ‚¨è‡ªè¡Œåˆ†æå†ä¿®æ­£ã€‚
 */
 #pragma once
 
@@ -17,12 +17,12 @@ struct SharedPtr {
 };
 
 struct BlockLegacy {
-	// »ñÈ¡·½¿éÃû
+	// è·å–æ–¹å—å
 	auto getFullName() const {
 		return (std::string&) * (__int64*)((__int64)this + 104);
 	}
 
-	// »ñÈ¡·½¿éIDºÅ
+	// è·å–æ–¹å—IDå·
 	auto getBlockItemID() const {
 		return SYM_CALL(short (*)(const BlockLegacy*),
 			MSSYM_B1QE14getBlockItemIdB1AE11BlockLegacyB2AAA7QEBAFXZ,
@@ -32,14 +32,14 @@ struct BlockLegacy {
 };
 
 struct BlockPos {
-	// »ñÈ¡×ø±êÊı×éÍ·
+	// è·å–åæ ‡æ•°ç»„å¤´
 	INT32* getPosition() const {
 		return reinterpret_cast<INT32*>(reinterpret_cast<VA>(this));
 	}
 };
 
 struct Block {
-	// »ñÈ¡Ô´
+	// è·å–æº
 	const BlockLegacy* getLegacyBlock() const {
 		return SYM_CALL(const BlockLegacy * (*)(const Block*),
 			MSSYM_B1QE14getLegacyBlockB1AA5BlockB2AAE19QEBAAEBVBlockLegacyB2AAA2XZ,
@@ -48,18 +48,18 @@ struct Block {
 };
 
 struct BlockActor {
-	// È¡·½¿é
+	// å–æ–¹å—
 	Block* getBlock() {
 		return *reinterpret_cast<Block**>(reinterpret_cast<VA>(this) + 16);
 	}
-	// È¡·½¿éÎ»ÖÃ
+	// å–æ–¹å—ä½ç½®
 	BlockPos* getPosition() {
 		return reinterpret_cast<BlockPos*>(reinterpret_cast<VA>(this) + 44);
 	}
 };
 
 struct BlockSource {
-	// È¡·½¿é
+	// å–æ–¹å—
 	const Block* getBlock(const BlockPos* blkpos) {
 		return SYM_CALL(const Block * (*)(decltype(this), decltype(blkpos)),
 			MSSYM_B1QA8getBlockB1AE11BlockSourceB2AAE13QEBAAEBVBlockB2AAE12AEBVBlockPosB3AAAA1Z,
@@ -74,25 +74,25 @@ struct Vec3 {
 };
 
 struct Actor {
-	// È¡·½¿éÔ´
+	// å–æ–¹å—æº
 	BlockSource* getRegion() {
 		return *reinterpret_cast<BlockSource**>(reinterpret_cast<VA>(this) + 414*sizeof(void*));
 	}
-	// È¡Î¬¶ÈID
+	// å–ç»´åº¦ID
 	int getDimension() {
 		return *reinterpret_cast<int*>(reinterpret_cast<VA>(this) + 188);
 	}
-	// È¡Ãû×Ö±êÇ©
+	// å–åå­—æ ‡ç­¾
 	const std::string* getNameTag() const {
 		return SYM_CALL(const std::string * (*)(const Actor*),
 			MSSYM_B1QE10getNameTagB1AA5ActorB2AAA8UEBAAEBVB2QDA5basicB1UA6stringB1AA2DUB2QDA4charB1UA6traitsB1AA1DB1AA3stdB2AAA1VB2QDA9allocatorB1AA1DB1AA12B2AAA3stdB2AAA2XZ,
 			this);
 	}
-	// ÊÇ·ñĞü¿Õ
+	// æ˜¯å¦æ‚¬ç©º
 	const byte isStand() {
 		return *reinterpret_cast<byte *>(reinterpret_cast<VA>(this) + 376);
 	}
-	// È¡Íæ¼ÒÎ»ÖÃ
+	// å–ç©å®¶ä½ç½®
 	Vec3* getPos() {
 		return (Vec3*)SYM_CALL(Vec3 *(*)(void *),
 			MSSYM_B1QA6getPosB1AA5ActorB2AAE12UEBAAEBVVec3B2AAA2XZ,
@@ -111,7 +111,7 @@ struct GameMode {
 };
 
 struct ContainerManagerModel {
-	// È¡¿ªÈİÕß
+	// å–å¼€å®¹è€…
 	Player* getPlayer() {
 		return *reinterpret_cast<Player**>(reinterpret_cast<VA>(this) + 8);
 	}
@@ -121,19 +121,19 @@ struct LevelContainerManagerModel
 };
 
 struct ItemStack {
-	// È¡ÎïÆ·ID
+	// å–ç‰©å“ID
 	int getId() {
 		return SYM_CALL(int(*)(ItemStack*),
 			MSSYM_B1QA5getIdB1AE13ItemStackBaseB2AAA7QEBAFXZ,
 			this);
 	}
-	// È¡ÎïÆ·Ãû³Æ
-	INT64 getName(std::string& str) {
-		return SYM_CALL(INT64(*)(decltype(this), decltype(str)),
+	// å–ç‰©å“åç§°
+	std::string getName() {
+		return SYM_CALL(std::string(*)(ItemStack*),
 			MSSYM_B1QA7getNameB1AE13ItemStackBaseB2AAA4QEBAB1QA2AVB2QDA5basicB1UA6stringB1AA2DUB2QDA4charB1UA6traitsB1AA1DB1AA3stdB2AAA1VB2QDA9allocatorB1AA1DB1AA12B2AAA3stdB2AAA2XZ,
-			this, str);
+			this;
 	}
-	// È¡ÈİÆ÷ÄÚÊıÁ¿
+	// å–å®¹å™¨å†…æ•°é‡
 	int getStackSize() {
 		return SYM_CALL(int(*)(ItemStack*),
 			MSSYM_B1QA8getCountB1AE18ContainerItemStackB2AAA7QEBAHXZ,
