@@ -1,8 +1,6 @@
 #include "pch.h"
 #include "mod.h"
-#include "SymHook.h"
 #include "Minecraft.hpp"
-using namespace SymHook;
 
 /**——————————————————————————————————————**
  |              MOD C++文件               |
@@ -195,7 +193,7 @@ namespace Log {
 
 // 玩家放置方块
 THook(__int64,
-	MSSYM_B1QE21onBlockPlacedByPlayerB1AE34VanillaServerGameplayEventListenerB2AAA4UEAAB1QE14AW4EventResultB2AAE10AEAVPlayerB2AAA9AEBVBlockB2AAE12AEBVBlockPosB3AAUA1NB1AA1Z,
+	MSSYM_MD5_949c4cd05bf2b86d54fb93fe7569c2b8,
 	void* _this, Player* pPlayer, const Block* pBlk, const BlockPos* pBlkpos, bool _bool) {
 	Log::Player::Block("Event", pPlayer->getNameTag()->c_str(), pPlayer->isStand(), pPlayer->getDimension(), u8"放置", pBlk->getLegacyBlock()->getFullName(), pBlkpos->getPosition());
 	return original(_this, pPlayer, pBlk, pBlkpos, _bool);
@@ -205,8 +203,7 @@ THook(bool,
 	MSSYM_B1QA9useItemOnB1AA8GameModeB2AAA4UEAAB1UE14NAEAVItemStackB2AAE12AEBVBlockPosB2AAA9EAEBVVec3B2AAA9PEBVBlockB3AAAA1Z,
 	void* _this, ItemStack* item, const BlockPos* pBlkpos, unsigned __int8 a4, void *v5, Block* pBlk) {
 	auto pPlayer = *reinterpret_cast<Player * *>(reinterpret_cast<VA>(_this) + 8);
-	std::string mstr = "";
-	item->getName(mstr);
+	std::string mstr = item->getName();
 	bool ret = original(_this, item, pBlkpos, a4, v5, pBlk);
 	if (ret) {
 		Log::Player::Item("Event", pPlayer->getNameTag()->c_str(), pPlayer->isStand(), pPlayer->getDimension(), u8"操作", mstr, pBlkpos->getPosition());
@@ -272,17 +269,13 @@ THook(void,
 	auto slot = a2;
 	auto pItemStack = a3;
 	auto id = pItemStack->getId();
-	auto size = pItemStack->getStackSize();
+	auto size = pItemStack->getCount();
 	auto pPlayer = _this->getPlayer();
-	if (id >= 0) {
-		std::string object_name;
-		pItemStack->getName(object_name);
-		if (size == 0) {
-			Log::Player::Container_Out("Event", pPlayer->getNameTag()->c_str(), pPlayer->getDimension(), slot);
-		} else
-			Log::Player::Container_In("Event", pPlayer->getNameTag()->c_str(), pPlayer->getDimension(), slot, size, object_name);
+	std::string object_name = pItemStack->getName();
+	if (size == 0) {
+		Log::Player::Container_Out("Event", pPlayer->getNameTag()->c_str(), pPlayer->getDimension(), slot);
 	} else
-		Log::Player::Error("Warning", pPlayer->getNameTag()->c_str(), pPlayer->getDimension(), u8"使用了未知方块！");
+		Log::Player::Container_In("Event", pPlayer->getNameTag()->c_str(), pPlayer->getDimension(), slot, size, object_name);
 	original(_this, a2, a3);
 }
 
@@ -310,7 +303,7 @@ THook(void,
 		auto srActid = (__int64*)(*(__int64(__fastcall * *)(__int64, char*))(*(__int64*)v2[1] + 56i64))(
 			v2[1],
 			&v72);
-		auto SrAct = SYM_CALL(const Actor * (*)(__int64, __int64, char),
+		auto SrAct = SYMCALL(Actor *,
 			MSSYM_B1QE11fetchEntityB1AA5LevelB2AAE13QEBAPEAVActorB2AAE14UActorUniqueIDB3AAUA1NB1AA1Z,
 			v7, *srActid, 0);
 		auto sr_name = "";

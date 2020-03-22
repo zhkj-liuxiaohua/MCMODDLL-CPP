@@ -27,9 +27,6 @@
     <ClInclude Include="detver.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="SymHook.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="Minecraft.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -37,6 +34,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="resource.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="符号定位.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -52,14 +52,8 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="symbol.txt">
-      <Filter>资源文件</Filter>
-    </Text>
     <Text Include="使用说明.txt">
       <Filter>使用说明</Filter>
-    </Text>
-    <Text Include="bedrock_server的PDB符号信息.txt">
-      <Filter>资源文件</Filter>
     </Text>
   </ItemGroup>
   <ItemGroup>

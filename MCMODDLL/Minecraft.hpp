@@ -4,7 +4,7 @@
 */
 #pragma once
 
-using namespace SymHook;
+#include "符号定位.hpp"
 
 template<typename T>
 struct SharedPtr {
@@ -19,12 +19,12 @@ struct SharedPtr {
 struct BlockLegacy {
 	// 获取方块名
 	auto getFullName() const {
-		return (std::string&) * (__int64*)((__int64)this + 104);
+		return  *(std::string*)((VA)this + 104);
 	}
 
 	// 获取方块ID号
-	auto getBlockItemID() const {
-		return SYM_CALL(short (*)(const BlockLegacy*),
+	auto getBlockItemId() const {
+		return SYMCALL(short,
 			MSSYM_B1QE14getBlockItemIdB1AE11BlockLegacyB2AAA7QEBAFXZ,
 			this);
 	}
@@ -41,7 +41,7 @@ struct BlockPos {
 struct Block {
 	// 获取源
 	const BlockLegacy* getLegacyBlock() const {
-		return SYM_CALL(const BlockLegacy * (*)(const Block*),
+		return SYMCALL(const BlockLegacy *,
 			MSSYM_B1QE14getLegacyBlockB1AA5BlockB2AAE19QEBAAEBVBlockLegacyB2AAA2XZ,
 			this);
 	}
@@ -61,7 +61,7 @@ struct BlockActor {
 struct BlockSource {
 	// 取方块
 	const Block* getBlock(const BlockPos* blkpos) {
-		return SYM_CALL(const Block * (*)(decltype(this), decltype(blkpos)),
+		return SYMCALL(const Block *,
 			MSSYM_B1QA8getBlockB1AE11BlockSourceB2AAE13QEBAAEBVBlockB2AAE12AEBVBlockPosB3AAAA1Z,
 			this, blkpos);
 	}
@@ -84,8 +84,8 @@ struct Actor {
 	}
 	// 取名字标签
 	const std::string* getNameTag() const {
-		return SYM_CALL(const std::string * (*)(const Actor*),
-			MSSYM_B1QE10getNameTagB1AA5ActorB2AAA8UEBAAEBVB2QDA5basicB1UA6stringB1AA2DUB2QDA4charB1UA6traitsB1AA1DB1AA3stdB2AAA1VB2QDA9allocatorB1AA1DB1AA12B2AAA3stdB2AAA2XZ,
+		return SYMCALL(const std::string *,
+			MSSYM_MD5_7044ab83168b0fd345329e6566fd47fd,
 			this);
 	}
 	// 是否悬空
@@ -94,7 +94,7 @@ struct Actor {
 	}
 	// 取玩家位置
 	Vec3* getPos() {
-		return (Vec3*)SYM_CALL(Vec3 *(*)(void *),
+		return SYMCALL(Vec3 *,
 			MSSYM_B1QA6getPosB1AA5ActorB2AAE12UEBAAEBVVec3B2AAA2XZ,
 			this);
 	}
@@ -123,19 +123,21 @@ struct LevelContainerManagerModel
 struct ItemStack {
 	// 取物品ID
 	int getId() {
-		return SYM_CALL(int(*)(ItemStack*),
+		return SYMCALL(short,
 			MSSYM_B1QA5getIdB1AE13ItemStackBaseB2AAA7QEBAFXZ,
 			this);
 	}
 	// 取物品名称
-	INT64 getName(std::string& str) {
-		return SYM_CALL(INT64(*)(decltype(this), decltype(str)),
-			MSSYM_B1QA7getNameB1AE13ItemStackBaseB2AAA4QEBAB1QA2AVB2QDA5basicB1UA6stringB1AA2DUB2QDA4charB1UA6traitsB1AA1DB1AA3stdB2AAA1VB2QDA9allocatorB1AA1DB1AA12B2AAA3stdB2AAA2XZ,
-			this, str);
+	std::string getName() {
+		std::string str;
+		SYMCALL(VA,
+			MSSYM_MD5_6d581a35d7ad70fd364b60c3ebe93394,
+			this, &str);
+		return str;
 	}
 	// 取容器内数量
-	int getStackSize() {
-		return SYM_CALL(int(*)(ItemStack*),
+	int getCount() {
+		return SYMCALL(int,
 			MSSYM_B1QA8getCountB1AE18ContainerItemStackB2AAA7QEBAHXZ,
 			this);
 	}
