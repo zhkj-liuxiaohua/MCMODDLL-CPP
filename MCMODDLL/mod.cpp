@@ -215,7 +215,7 @@ THook(bool,
 	MSSYM_B2QUE20destroyBlockInternalB1AA8GameModeB2AAA4AEAAB1UE13NAEBVBlockPosB2AAA1EB1AA1Z,
 	void * _this, const BlockPos* pBlkpos) {
 	auto pPlayer = *reinterpret_cast<Player * *>(reinterpret_cast<VA>(_this) + 8);
-	auto pBlockSource = *(BlockSource * *)(*((__int64*)_this + 1) + 840i64);
+	auto pBlockSource = *(BlockSource * *)(*((VA*)_this + 1) + 800);
 	auto pBlk = pBlockSource->getBlock(pBlkpos);
 	auto block_name = pBlk->getLegacyBlock()->getFullName();
 	bool ret = original(_this, pBlkpos);
@@ -299,8 +299,8 @@ THook(void,
 		__int64  v2[2];
 		v2[0] = (__int64)_this;
 		v2[1] = (__int64)dmsg;
-		auto v7 = *((__int64*)(v2[0] + 856));
-		auto srActid = (__int64*)(*(__int64(__fastcall * *)(__int64, char*))(*(__int64*)v2[1] + 56i64))(
+		auto v7 = *((__int64*)(v2[0] + 816));
+		auto srActid = (__int64*)(*(__int64(__fastcall * *)(__int64, char*))(*(__int64*)v2[1] + 56))(
 			v2[1],
 			&v72);
 		auto SrAct = SYMCALL(Actor *,
