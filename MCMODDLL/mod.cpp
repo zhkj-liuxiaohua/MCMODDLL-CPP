@@ -325,10 +325,9 @@ THook(void,
 		__int64  v2[2];
 		v2[0] = (__int64)_this;
 		v2[1] = (__int64)dmsg;
-		auto v7 = SYMCALL(VA, MSSYM_B1QA8getLevelB1AA5ActorB2AAE13QEAAAEAVLevelB2AAA2XZ, v2[0]); //*((__int64*)(v2[0] + 816));
-		auto srActid = (VA*)(*(VA(__fastcall**)(VA, char*))(**((VA**)&v2 + 1) + 64))(
-			*((VA*)&v2 + 1),
-			&v72);
+		auto v7 = SYMCALL(VA, MSSYM_B1QA8getLevelB1AA5ActorB2AAE13QEAAAEAVLevelB2AAA2XZ, v2[0]);
+		auto srActid = (VA*)(*(VA(__fastcall**)(VA, char*))(*(VA*)v2[1] + 64))(
+			v2[1], &v72);
 		auto SrAct = SYMCALL(Actor *,
 			MSSYM_B1QE11fetchEntityB1AA5LevelB2AAE13QEBAPEAVActorB2AAE14UActorUniqueIDB3AAUA1NB1AA1Z,
 			v7, *srActid, 0);
