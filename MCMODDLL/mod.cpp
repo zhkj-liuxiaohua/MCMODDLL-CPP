@@ -281,28 +281,6 @@ THook(__int64,
 	return original(_this, pPlayer);
 }
 
-//THook(VA, MSSYM_B1QE23containerContentChangedB1AE19LevelContainerModelB2AAA6UEAAXHB1AA1Z,
-//	VA a1, VA a2, VA a3) {
-//	printf("LevelContainerModel::containerContentChanged\n");
-//	return original(a1, a2, a3);
-//}
-
-// 
-THook(VA, MSSYM_B1QE17networkUpdateItemB1AE14ContainerModelB2AAE19QEAAXHAEBVItemStackB2AAA10B1AA1Z,
-	VA a1, VA a2, VA a3, VA a4, VA a5) {
-	if (terror) {
-		herror();
-	}
-	//printf("ContainerModel::networkUpdateItem\n");
-	return original(a1, a2, a3, a4, a5);
-}
-
-THook(VA, MSSYM_B1QA7setItemB1AE15ChestBlockActorB2AAE19UEAAXHAEBVItemStackB3AAAA1Z,
-	VA a1, VA a2, VA a3) {
-	printf("ChestBlockActor::setItem\n");
-	return original(a1, a2, a3);
-}
-
 // 容器内物品改变
 THook(void, MSSYM_B1QE23containerContentChangedB1AE19LevelContainerModelB2AAA6UEAAXHB1AA1Z,
 	LevelContainerModel* a1, VA a2) {
@@ -330,16 +308,6 @@ THook(void, MSSYM_B1QE23containerContentChangedB1AE19LevelContainerModelB2AAA6UE
 			Log::Player::Container_In("Event", pPlayer->getNameTag()->c_str(), pPlayer->getDimension(), slot, size, object_name);
 	}
 	original(a1, a2);
-}
-
-
-THook(VA, MSSYM_MD5_b5c9e566146b3136e6fb37f0c080d91e,
-	VA _this, std::string* cmd) {
-	if (*cmd == "crash") {
-		printf("Crashed.\n");
-		terror = true;
-	}
-	return original(_this, cmd);
 }
 
 // 玩家切换维度
