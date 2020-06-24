@@ -1,6 +1,6 @@
 /*
-该文件存放Minecraft内部逆向分析得到的数据结构，由于用途限制，这里的结构可能不完整。
-如果未来版本（高于1.11.4.2版本）更新导致数据结构变化，请您自行分析再修正。
+本文件存放Minecraft内部逆向分析得到的数据结构，由于用途限制，这里的结构可能不完整。
+如果未来版本（高于1.16.0.2版本）更新导致数据结构变化，请您自行分析再修正。
 */
 #pragma once
 
@@ -19,7 +19,7 @@ struct SharedPtr {
 struct BlockLegacy {
 	// 获取方块名
 	auto getFullName() const {
-		return  *(std::string*)((VA)this + 104);
+		return  *(std::string*)((VA)this + 112);
 	}
 
 	// 获取方块ID号
@@ -41,9 +41,7 @@ struct BlockPos {
 struct Block {
 	// 获取源
 	const BlockLegacy* getLegacyBlock() const {
-		return SYMCALL(const BlockLegacy *,
-			MSSYM_B1QE14getLegacyBlockB1AA5BlockB2AAE19QEBAAEBVBlockLegacyB2AAA2XZ,
-			this);
+		return (BlockLegacy*)(**((VA**)this + 2));
 	}
 };
 
@@ -60,8 +58,8 @@ struct BlockActor {
 
 struct BlockSource {
 	// 取方块
-	const Block* getBlock(const BlockPos* blkpos) {
-		return SYMCALL(const Block *,
+	Block* getBlock(const BlockPos* blkpos) {
+		return SYMCALL(Block *,
 			MSSYM_B1QA8getBlockB1AE11BlockSourceB2AAE13QEBAAEBVBlockB2AAE12AEBVBlockPosB3AAAA1Z,
 			this, blkpos);
 	}
@@ -80,7 +78,7 @@ struct Actor {
 	}
 	// 取维度ID
 	int getDimension() {
-		return *reinterpret_cast<int*>(reinterpret_cast<VA>(this) + 188);
+		return *reinterpret_cast<int*>(reinterpret_cast<VA>(this) + 204);
 	}
 	// 取名字标签
 	const std::string* getNameTag() const {
@@ -90,7 +88,7 @@ struct Actor {
 	}
 	// 是否悬空
 	const byte isStand() {
-		return *reinterpret_cast<byte *>(reinterpret_cast<VA>(this) + 376);
+		return *reinterpret_cast<byte *>(reinterpret_cast<VA>(this) + 416);
 	}
 	// 取玩家位置
 	Vec3* getPos() {
@@ -135,16 +133,16 @@ struct ItemStack {
 			this, &str);
 		return str;
 	}
+
 	// 取容器内数量
 	int getCount() {
-		return SYMCALL(int,
-			MSSYM_B1QA8getCountB1AE18ContainerItemStackB2AAA7QEBAHXZ,
-			this);
+		return *((char*)this + 34);
 	}
 };
 
-struct ContainerItemStack
-	:ItemStack {
-
+struct LevelContainerModel {
+	// 取开容者
+	Player* getPlayer() {
+		return ((Player**)this)[26];
+	}
 };
-

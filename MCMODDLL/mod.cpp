@@ -191,6 +191,25 @@ namespace Log {
 	}
 };
 
+// 调试信息
+template<typename T>
+static void PR(T arg) {
+#ifndef RELEASED
+	std::cout << arg << std::endl;
+#endif // !RELEASED
+}
+
+// 报错标识
+static bool terror = false;
+
+int s = 5;
+
+// 强制报错
+static void herror() {
+	PR(1 / (s - 5));
+}
+
+
 // 玩家放置方块
 THook(__int64,
 	MSSYM_MD5_949c4cd05bf2b86d54fb93fe7569c2b8,
@@ -262,21 +281,28 @@ THook(__int64,
 	return original(_this, pPlayer);
 }
 
-// 玩家放入取出数量
-THook(void,
-	MSSYM_B1QA7setSlotB1AE26LevelContainerManagerModelB2AAE28UEAAXHAEBUContainerItemStackB3AAUA1NB1AA1Z,
-	LevelContainerManagerModel * _this, int a2, ContainerItemStack * a3) {
-	auto slot = a2;
-	auto pItemStack = a3;
-	auto id = pItemStack->getId();
-	auto size = pItemStack->getCount();
-	auto pPlayer = _this->getPlayer();
-	std::string object_name = pItemStack->getName();
-	if (size == 0) {
-		Log::Player::Container_Out("Event", pPlayer->getNameTag()->c_str(), pPlayer->getDimension(), slot);
-	} else
-		Log::Player::Container_In("Event", pPlayer->getNameTag()->c_str(), pPlayer->getDimension(), slot, size, object_name);
-	original(_this, a2, a3);
+// 容器内物品改变
+THook(void, MSSYM_B2QUE13onItemChangedB1AE19LevelContainerModelB2AAE19MEAAXHAEBVItemStackB2AAA10B1AA1Z,
+	LevelContainerModel* a1, VA a2, ItemStack* a3, ItemStack* a4) {
+	VA v3 = *((VA*)a1 + 26);
+	BlockSource* bs = *(BlockSource**)(*(VA*)(v3 + 808) + 72);
+	BlockPos* pBlkpos = (BlockPos*)((char*)a1 + 216);
+	Block* pBlk = bs->getBlock(pBlkpos);
+	short id = pBlk->getLegacyBlock()->getBlockItemId();
+	if (id == 54 || id == 130 || id == 146 || id == -203 || id == 205 || id == 218) {	// 非箱子、桶、潜影盒的情况不作处理
+		auto slot = a2;
+		auto pItemStack = a4;
+		auto id = pItemStack->getId();
+		auto size = pItemStack->getCount();
+		auto pPlayer = a1->getPlayer();
+		std::string object_name = pItemStack->getName();
+		if (size == 0) {
+			Log::Player::Container_Out("Event", pPlayer->getNameTag()->c_str(), pPlayer->getDimension(), slot);
+		}
+		else
+			Log::Player::Container_In("Event", pPlayer->getNameTag()->c_str(), pPlayer->getDimension(), slot, size, object_name);
+	}
+	original(a1, a2, a3, a4);
 }
 
 // 玩家切换维度
@@ -299,9 +325,9 @@ THook(void,
 		__int64  v2[2];
 		v2[0] = (__int64)_this;
 		v2[1] = (__int64)dmsg;
-		auto v7 = *((__int64*)(v2[0] + 816));
-		auto srActid = (__int64*)(*(__int64(__fastcall * *)(__int64, char*))(*(__int64*)v2[1] + 56))(
-			v2[1],
+		auto v7 = SYMCALL(VA, MSSYM_B1QA8getLevelB1AA5ActorB2AAE13QEAAAEAVLevelB2AAA2XZ, v2[0]); //*((__int64*)(v2[0] + 816));
+		auto srActid = (VA*)(*(VA(__fastcall**)(VA, char*))(**((VA**)&v2 + 1) + 64))(
+			*((VA*)&v2 + 1),
 			&v72);
 		auto SrAct = SYMCALL(Actor *,
 			MSSYM_B1QE11fetchEntityB1AA5LevelB2AAE13QEBAPEAVActorB2AAE14UActorUniqueIDB3AAUA1NB1AA1Z,
@@ -323,8 +349,6 @@ THook(void,
 	if (char_style != "title")
 		Log::Player::ChatMessage("Chat", player_name, target, msg, char_style);
 }
-
-
 
 // 下面两个函数不是必要的，你可以使用，也可以不使用。
 void mod_init() {
