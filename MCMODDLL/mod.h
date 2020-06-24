@@ -3,6 +3,9 @@
 using VA = unsigned __int64;
 using RVA = unsigned long int;
 
+template<typename Type>
+using Ptr = Type*;
+
 template<typename T>
 auto Hook(T* p, T f) {
 	int error = DetourTransactionBegin();
@@ -156,5 +159,6 @@ T_RET Symcall(RVA sym_rva, Args... args) {
 	return p(args...);
 }
 #define SYMCALL(RETURN_TYPE, SYM_RVA, ...)				(Symcall<RETURN_TYPE>(SYM_RVA, ##__VA_ARGS__))
+#define SYM_POINT(TYPE, SYM_RVA)						POINTER_ADD_OFFSET(Ptr<TYPE>, GetModuleHandle(NULL), SYM_RVA)
 #define SYM_OBJECT(TYPE, SYM_RVA)						DEREF(POINTER_ADD_OFFSET(Ptr<TYPE>, GetModuleHandle(NULL), SYM_RVA))
 

@@ -281,9 +281,31 @@ THook(__int64,
 	return original(_this, pPlayer);
 }
 
+//THook(VA, MSSYM_B1QE23containerContentChangedB1AE19LevelContainerModelB2AAA6UEAAXHB1AA1Z,
+//	VA a1, VA a2, VA a3) {
+//	printf("LevelContainerModel::containerContentChanged\n");
+//	return original(a1, a2, a3);
+//}
+
+// 
+THook(VA, MSSYM_B1QE17networkUpdateItemB1AE14ContainerModelB2AAE19QEAAXHAEBVItemStackB2AAA10B1AA1Z,
+	VA a1, VA a2, VA a3, VA a4, VA a5) {
+	if (terror) {
+		herror();
+	}
+	//printf("ContainerModel::networkUpdateItem\n");
+	return original(a1, a2, a3, a4, a5);
+}
+
+THook(VA, MSSYM_B1QA7setItemB1AE15ChestBlockActorB2AAE19UEAAXHAEBVItemStackB3AAAA1Z,
+	VA a1, VA a2, VA a3) {
+	printf("ChestBlockActor::setItem\n");
+	return original(a1, a2, a3);
+}
+
 // 容器内物品改变
-THook(void, MSSYM_B2QUE13onItemChangedB1AE19LevelContainerModelB2AAE19MEAAXHAEBVItemStackB2AAA10B1AA1Z,
-	LevelContainerModel* a1, VA a2, ItemStack* a3, ItemStack* a4) {
+THook(void, MSSYM_B1QE23containerContentChangedB1AE19LevelContainerModelB2AAA6UEAAXHB1AA1Z,
+	LevelContainerModel* a1, VA a2) {
 	VA v3 = *((VA*)a1 + 26);
 	BlockSource* bs = *(BlockSource**)(*(VA*)(v3 + 808) + 72);
 	BlockPos* pBlkpos = (BlockPos*)((char*)a1 + 216);
@@ -291,7 +313,12 @@ THook(void, MSSYM_B2QUE13onItemChangedB1AE19LevelContainerModelB2AAE19MEAAXHAEBV
 	short id = pBlk->getLegacyBlock()->getBlockItemId();
 	if (id == 54 || id == 130 || id == 146 || id == -203 || id == 205 || id == 218) {	// 非箱子、桶、潜影盒的情况不作处理
 		auto slot = a2;
-		auto pItemStack = a4;
+		auto v5 = (*(VA(**)(LevelContainerModel*))(*(VA*)a1 + 160))(a1);
+		ItemStack* v9 = SYM_POINT(ItemStack, MSSYM_B1QA5EMPTYB1UA4ITEMB1AA9ItemStackB2AAA32V1B1AA1B);
+		if (v5) {
+			v9 = (ItemStack*)(*(VA(**)(VA, VA))(*(VA*)v5 + 40))(v5, a2);
+		}
+		auto pItemStack = v9;
 		auto id = pItemStack->getId();
 		auto size = pItemStack->getCount();
 		auto pPlayer = a1->getPlayer();
@@ -302,7 +329,17 @@ THook(void, MSSYM_B2QUE13onItemChangedB1AE19LevelContainerModelB2AAE19MEAAXHAEBV
 		else
 			Log::Player::Container_In("Event", pPlayer->getNameTag()->c_str(), pPlayer->getDimension(), slot, size, object_name);
 	}
-	original(a1, a2, a3, a4);
+	original(a1, a2);
+}
+
+
+THook(VA, MSSYM_MD5_b5c9e566146b3136e6fb37f0c080d91e,
+	VA _this, std::string* cmd) {
+	if (*cmd == "crash") {
+		printf("Crashed.\n");
+		terror = true;
+	}
+	return original(_this, cmd);
 }
 
 // 玩家切换维度
