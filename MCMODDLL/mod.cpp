@@ -295,17 +295,17 @@ THook(void, MSSYM_B1QE23containerContentChangedB1AE19LevelContainerModelB2AAA6UE
 		ItemStack* v9 = SYM_POINT(ItemStack, MSSYM_B1QA5EMPTYB1UA4ITEMB1AA9ItemStackB2AAA32V1B1AA1B);
 		if (v5) {
 			v9 = (ItemStack*)(*(VA(**)(VA, VA))(*(VA*)v5 + 40))(v5, a2);
+			auto pItemStack = v9;
+			auto id = pItemStack->getId();
+			auto size = pItemStack->getCount();
+			auto pPlayer = a1->getPlayer();
+			std::string object_name = pItemStack->getName();
+			if (size == 0) {
+				Log::Player::Container_Out("Event", pPlayer->getNameTag()->c_str(), pPlayer->getDimension(), slot);
+			}
+			else
+				Log::Player::Container_In("Event", pPlayer->getNameTag()->c_str(), pPlayer->getDimension(), slot, size, object_name);
 		}
-		auto pItemStack = v9;
-		auto id = pItemStack->getId();
-		auto size = pItemStack->getCount();
-		auto pPlayer = a1->getPlayer();
-		std::string object_name = pItemStack->getName();
-		if (size == 0) {
-			Log::Player::Container_Out("Event", pPlayer->getNameTag()->c_str(), pPlayer->getDimension(), slot);
-		}
-		else
-			Log::Player::Container_In("Event", pPlayer->getNameTag()->c_str(), pPlayer->getDimension(), slot, size, object_name);
 	}
 	original(a1, a2);
 }
