@@ -24,9 +24,11 @@ struct BlockLegacy {
 
 	// ªÒ»°∑ΩøÈID∫≈
 	auto getBlockItemId() const {
-		return SYMCALL(short,
-			MSSYM_B1QE14getBlockItemIdB1AE11BlockLegacyB2AAA7QEBAFXZ,
-			this);
+		short v3 = *(short*)((VA)this + 268);
+		if (v3 < 0x100) {
+			return v3;
+		}
+		return (short)(255 - v3);
 	}
 
 };

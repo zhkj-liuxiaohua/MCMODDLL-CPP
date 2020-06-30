@@ -320,6 +320,12 @@ THook(bool,
 	return ret;
 }
 
+THook(VA, MSSYM_B1QE12pushOutItemsB1AE17DropperBlockActorB2AAA4QEAAB1UE16NAEAVBlockSourceB3AAAA1Z,
+	VA a1, VA a2, VA a3) {
+	PR("DropperBlockActor::pushOutItems");
+	return original(a1, a2, a3);
+}
+
 // √¸√˚…˙ŒÔÀ¿Õˆ
 THook(void,
 	MSSYM_B1QA3dieB1AA3MobB2AAE26UEAAXAEBVActorDamageSourceB3AAAA1Z,
@@ -330,7 +336,7 @@ THook(void,
 		__int64  v2[2];
 		v2[0] = (__int64)_this;
 		v2[1] = (__int64)dmsg;
-		auto v7 = SYMCALL(VA, MSSYM_B1QA8getLevelB1AA5ActorB2AAE13QEAAAEAVLevelB2AAA2XZ, v2[0]);
+		auto v7 = *(VA*)(v2[0] + 816);
 		auto srActid = (VA*)(*(VA(__fastcall**)(VA, char*))(*(VA*)v2[1] + 64))(
 			v2[1], &v72);
 		auto SrAct = SYMCALL(Actor *,
