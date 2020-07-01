@@ -320,12 +320,6 @@ THook(bool,
 	return ret;
 }
 
-THook(VA, MSSYM_B1QE12pushOutItemsB1AE17DropperBlockActorB2AAA4QEAAB1UE16NAEAVBlockSourceB3AAAA1Z,
-	VA a1, VA a2, VA a3) {
-	PR("DropperBlockActor::pushOutItems");
-	return original(a1, a2, a3);
-}
-
 // √¸√˚…˙ŒÔÀ¿Õˆ
 THook(void,
 	MSSYM_B1QA3dieB1AA3MobB2AAE26UEAAXAEBVActorDamageSourceB3AAAA1Z,
