@@ -301,10 +301,10 @@ THook(void, MSSYM_B1QE23containerContentChangedB1AE19LevelContainerModelB2AAA6UE
 			auto pPlayer = a1->getPlayer();
 			std::string object_name = pItemStack->getName();
 			if (size == 0) {
-				Log::Player::Container_Out("Event", pPlayer->getNameTag()->c_str(), pPlayer->getDimension(), slot);
+				Log::Player::Container_Out("Event", pPlayer->getNameTag()->c_str(), pPlayer->getDimension(), (int)slot);
 			}
 			else
-				Log::Player::Container_In("Event", pPlayer->getNameTag()->c_str(), pPlayer->getDimension(), slot, size, object_name);
+				Log::Player::Container_In("Event", pPlayer->getNameTag()->c_str(), pPlayer->getDimension(), (int)slot, size, object_name);
 		}
 	}
 	original(a1, a2);
@@ -358,7 +358,7 @@ THook(void,
 void mod_init() {
 	// 此处填写模块加载时候的操作
 	// system("chcp 65001");
-	std::cout << u8"{监控插件已加载。" << std::endl;
+	std::cout << u8"{监控插件已加载。版本：1.16.20.3" << std::endl;
 }
 void mod_exit() {
 	// 此处填写模块卸载时候的操作
