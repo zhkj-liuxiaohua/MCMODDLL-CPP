@@ -358,7 +358,7 @@ THook(void,
 void mod_init() {
 	// 此处填写模块加载时候的操作
 	// system("chcp 65001");
-	std::cout << u8"{监控插件已加载。版本：1.16.20.3" << std::endl;
+	std::cout << u8"{监控插件已加载。版本：1.16.40.2" << std::endl;
 }
 void mod_exit() {
 	// 此处填写模块卸载时候的操作
